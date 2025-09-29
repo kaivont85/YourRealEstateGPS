@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Your Real Estate GPS — Digital Card</title>
 
-<!-- QR + PNG export -->
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<!-- QR (SVG) + both PNG exporters -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 
 <style>
   :root{
@@ -17,7 +18,6 @@
     --qr-bg:#000; --qr-fg:#fff;
     --shadow:0 20px 50px rgba(0,0,0,.45);
   }
-  /* Light theme */
   :root[data-theme="light"]{
     --bg:#f7f8fb; --card:#ffffff; --ink:#0b1020; --muted:#556070;
     --brand:#d61f1f; --link:#0a58ff; --border:rgba(10,16,32,.10);
@@ -26,99 +26,74 @@
   }
 
   html,body{height:100%}
-  body{
-    margin:0; background:linear-gradient(120deg,var(--bg),#0b1220);
-    font-family: ui-sans-serif,system-ui,Segoe UI,Inter,Roboto,Arial;
-    color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
+  body{margin:0; background:linear-gradient(120deg,var(--bg),#0b1220);
+       font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Roboto,Arial; color:var(--ink);}
+
   .wrap{max-width:1120px;margin:28px auto;padding:16px;display:grid;gap:18px}
-
-  /* Top bar */
-  .bar{display:flex; gap:10px; align-items:center; justify-content:space-between;}
-  .toggle{display:inline-flex; align-items:center; gap:10px; font-size:14px; color:var(--muted);}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px;
-    border:1px solid var(--border); background:transparent; color:var(--ink);
-    text-decoration:none; cursor:pointer;
-  }
+  .bar{display:flex;align-items:center;justify-content:space-between}
+  .titlebar{color:var(--muted);font-size:14px}
+  .btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border-radius:12px;
+       border:1px solid var(--border);background:transparent;color:var(--ink);cursor:pointer;text-decoration:none}
+  .btn.primary{background:var(--ink);color:var(--bg)}
   .btn:hover{box-shadow:0 6px 20px rgba(0,0,0,.12)}
-  .btn.primary{background:var(--ink); color:var(--bg)}
-  .btn .dot{width:8px;height:8px;border-radius:999px;background:var(--brand)}
 
-  /* Grid */
-  .grid{display:grid; gap:18px}
-  @media (min-width:980px){ .grid{grid-template-columns:1fr 1fr} }
+  .grid{display:grid;gap:18px}
+  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
 
-  /* Card frame */
-  .card{
-    background:var(--card); border:1px solid var(--border); border-radius:22px; overflow:hidden;
-    box-shadow:var(--shadow);
-  }
+  .card{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
 
   /* FRONT */
-  .front{display:grid; grid-template-columns:1.1fr 0.9fr; min-height:460px}
-  .photo{position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;}
-  .photo img{width:100%; height:100%; object-fit:cover; display:block;}
-  .photo:after{content:""; position:absolute; inset:0;
-    background:linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,0));}
-  .info{display:flex; flex-direction:column; padding:34px 30px; gap:18px;}
-  .tagline{ color:var(--brand); font-style:italic; font-size:15px; letter-spacing:.2px }
-  .name{ font-size:36px; line-height:1.05; font-weight:900; letter-spacing:.2px }
-  .title{ font-size:16px; color:var(--muted); font-weight:600 }
+  .front{display:grid;grid-template-columns:1.1fr 0.9fr;min-height:460px}
+  .photo{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(0,0,0,0))}
+  .info{display:flex;flex-direction:column;padding:34px 30px;gap:18px}
+  .tagline{color:var(--brand);font-style:italic;font-size:15px;letter-spacing:.2px}
+  .name{font-size:36px;line-height:1.05;font-weight:900;letter-spacing:.2px}
+  .title{font-size:16px;color:var(--muted);font-weight:600}
 
-  /* Logo pill — one line with roomy spacing */
-  .logo{
-    margin-top:auto; display:flex; align-items:center; gap:16px;
-    border:1px solid var(--border); padding:10px 18px;
-    border-radius:50px; background:#fff; color:#0b1020;
-    width:fit-content;
-  }
-  .logo img{ height:42px; width:42px; border-radius:50%; object-fit:contain; display:block }
-  .logo .brandtext{ font-weight:700; font-size:16px; white-space:nowrap; letter-spacing:.3px }
+  /* Logo pill — one line */
+  .logo{margin-top:auto;display:flex;align-items:center;gap:16px;border:1px solid var(--border);
+        padding:10px 18px;border-radius:50px;background:#fff;color:#0b1020;width:fit-content}
+  .logo img{height:42px;width:42px;border-radius:50%;object-fit:contain;display:block}
+  .logo .brandtext{font-weight:700;font-size:16px;white-space:nowrap;letter-spacing:.3px}
 
   /* BACK */
-  .back{ display:grid; grid-template-rows:auto 1fr auto; padding:24px; gap:16px; min-height:460px }
-  .qrs{ display:grid; grid-template-columns:1fr 1fr; gap:16px }
-  .qr{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    background:linear-gradient(180deg, rgba(255,255,255,.04), transparent);
-    border:1px dashed var(--border); border-radius:16px; padding:14px;
-  }
-  .qr canvas{ width:150px; height:150px; }
-  .qr a{ margin-top:10px; font-size:13px; color:var(--link); text-decoration:underline; word-break:break-all }
+  .back{display:grid;grid-template-rows:auto 1fr auto;padding:24px;gap:16px;min-height:460px}
+  .qrs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .qr{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+       background:linear-gradient(180deg,rgba(255,255,255,.04),transparent);
+       border:1px dashed var(--border);border-radius:16px;padding:14px}
+  .qr .qrsvg{width:150px;height:150px;display:flex;align-items:center;justify-content:center}
+  .qr .qrsvg svg{width:100%;height:100%;display:block}
+  .qr a{margin-top:14px;font-size:13px;color:var(--link);text-decoration:underline;word-break:break-all}
 
-  .contact{ text-align:center; font-size:15px; color:var(--muted); line-height:1.6; }
-  .contact a{ color:var(--link); text-decoration:underline }
+  .contact{text-align:center;font-size:15px;color:var(--muted);line-height:1.6}
+  .contact a{color:var(--link);text-decoration:underline}
 
-  /* Social icons — colored round buttons */
-  .social{ display:flex; gap:16px; justify-content:center; padding:6px 0 2px; }
-  .icon{ width:38px; height:38px; display:grid; place-items:center; border-radius:50%; color:#fff; }
-  .icon svg{ width:18px; height:18px; fill:#fff; }
-  .icon.fb{ background:#1877F2; }  /* Facebook blue */
-  .icon.ig{ background:#E4405F; }  /* Instagram pink */
-  .icon.li{ background:#0A66C2; }  /* LinkedIn blue */
-  .icon.yt{ background:#FF0000; }  /* YouTube red */
+  .social{display:flex;gap:16px;justify-content:center;padding:6px 0 2px}
+  .icon{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;color:#fff}
+  .icon svg{width:18px;height:18px;fill:#fff}
+  .icon.fb{background:#1877F2}.icon.ig{background:#E4405F}.icon.li{background:#0A66C2}.icon.yt{background:#FF0000}
 
-  /* Actions */
-  .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
-  .note{ font-size:12px; color:var(--muted); }
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .note{font-size:12px;color:var(--muted)}
 
-  /* Mobile */
-  @media (max-width: 640px) {
-    .front{grid-template-columns:1fr; min-height:unset;}
-    .photo{min-height:360px;}
-    .info{align-items:center; text-align:center; padding:20px;}
+  @media(max-width:640px){
+    .front{grid-template-columns:1fr;min-height:unset}
+    .photo{min-height:360px}
+    .info{align-items:center;text-align:center;padding:20px}
     .qrs{grid-template-columns:1fr}
-    .qr canvas{width:128px;height:128px;}
-    .actions .btn{width:100%; justify-content:center;}
-    .note{display:none;}
+    .qr .qrsvg{width:128px;height:128px}
+    .actions .btn{width:100%;justify-content:center}
+    .note{display:none}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="bar">
-    <div class="toggle"><span class="dot"></span> Your Real Estate GPS</div>
+    <div class="titlebar">Your Real Estate GPS</div>
     <button id="themeBtn" class="btn">Toggle Dark / Light</button>
   </div>
 
@@ -126,7 +101,6 @@
     <!-- FRONT -->
     <section class="card front" id="card-front">
       <div class="photo">
-        <!-- No crossorigin when viewing file:// -->
         <img src="images/headshot.jpg" alt="Portrait">
       </div>
       <div class="info">
@@ -143,8 +117,14 @@
     <!-- BACK -->
     <section class="card back" id="card-back">
       <div class="qrs">
-        <div class="qr"><canvas id="qr-website"></canvas><a href="https://metrorealestategroup.co" target="_blank">metrorealestategroup.co</a></div>
-        <div class="qr"><canvas id="qr-linktree"></canvas><a href="https://linktr.ee/metrorealestategroup" target="_blank">linktr.ee/metrorealestategroup</a></div>
+        <div class="qr">
+          <div id="qr-website" class="qrsvg"></div>
+          <a href="https://metrorealestategroup.co" target="_blank">metrorealestategroup.co</a>
+        </div>
+        <div class="qr">
+          <div id="qr-linktree" class="qrsvg"></div>
+          <a href="https://linktr.ee/metrorealestategroup" target="_blank">linktr.ee/metrorealestategroup</a>
+        </div>
       </div>
 
       <div class="contact">
@@ -176,7 +156,7 @@
     <button id="saveFront" class="btn">Save Front as PNG</button>
     <button id="saveBack" class="btn">Save Back as PNG</button>
     <button id="saveFull" class="btn">Save Full Card as PNG</button>
-    <!-- <span class="note">Tip: toggle theme before exporting to get dark or light PNGs.</span> -->
+    <span class="note">Tip: toggle theme before exporting to get dark or light PNGs.</span>
   </div>
 </div>
 
@@ -188,30 +168,34 @@
     website: "https://metrorealestategroup.co",
     linktree: "https://linktr.ee/metrorealestategroup",
     email: "matt@metro-realestategroup.com",
-    phone1: "+17193105185", // COS
-    phone2: "+17205172345", // Denver
+    phone1: "+17193105185",
+    phone2: "+17205172345",
     addr1: "106 N. Tejon Street, Colorado Springs, CO 80903",
     addr2: "501 S. Cherry Street, Ste 1100, Denver, CO 80206"
   };
 
-  // Theme helpers
+  /* Theme */
   const root=document.documentElement;
   const themeBtn=document.getElementById("themeBtn");
   const getTheme=()=>localStorage.getItem("theme")||"dark";
   const setTheme=(t)=>{root.setAttribute("data-theme",t==="light"?"light":"dark");localStorage.setItem("theme",t);};
   setTheme(getTheme());
 
-  // QRs (draw & redraw on theme toggle)
-  function drawQR(id,value){
-    const bg=getComputedStyle(document.documentElement).getPropertyValue('--qr-bg').trim();
-    const fg=getComputedStyle(document.documentElement).getPropertyValue('--qr-fg').trim();
-    new QRious({element:document.getElementById(id), value, size:160, background:bg, foreground:fg});
+  /* QR as inline SVG */
+  function makeQR(elId, text){
+    const qr = qrcode(0, 'M'); qr.addData(text); qr.make();
+    const fg = getComputedStyle(document.documentElement).getPropertyValue('--qr-fg').trim() || '#fff';
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--qr-bg').trim() || '#000';
+    const svg = qr.createSvgTag({cellSize:4, margin:0})
+      .replace(/fill="black"/g, `fill="${fg}"`)
+      .replace(/fill="white"/g, `fill="${bg}"`);
+    document.getElementById(elId).innerHTML = svg;
   }
-  function drawAllQRs(){ drawQR("qr-website", CONFIG.website); drawQR("qr-linktree", CONFIG.linktree); }
+  function drawAllQRs(){ makeQR('qr-website', CONFIG.website); makeQR('qr-linktree', CONFIG.linktree); }
   drawAllQRs();
-  themeBtn.addEventListener("click", ()=>{ setTheme(getTheme()==="dark"?"light":"dark"); setTimeout(drawAllQRs,0); });
+  themeBtn.addEventListener('click', ()=>{ setTheme(getTheme()==='dark'?'light':'dark'); setTimeout(drawAllQRs,0); });
 
-  // vCard
+  /* vCard */
   const vcard=[
     "BEGIN:VCARD","VERSION:3.0",
     `FN:${CONFIG.name}`, `N:${CONFIG.name};;;;`,
@@ -227,22 +211,40 @@
   const vBlob=new Blob([vcard],{type:"text/vcard;charset=utf-8"});
   document.getElementById("btn-vcf").href=URL.createObjectURL(vBlob);
 
-  // PNG export (works with local files; includes Safari fallback)
-  async function exportPNG(selector, filename){
-    const node=document.querySelector(selector);
-    const canvas=await html2canvas(node,{
-      useCORS:true,
-      allowTaint:false,
-      scale:2,
-      backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--card')||"#0f1629"
-    });
-    const dataUrl=canvas.toDataURL("image/png");
-    const a=document.createElement("a"); a.href=dataUrl; a.download=filename;
-    if(typeof a.download==="string"){ a.click(); } else { window.open(dataUrl,"_blank"); }
+  /* ---- Robust PNG export ----
+     Use html2canvas for nodes that contain <img> (front/full via file://),
+     and html-to-image for nodes without <img> (back). */
+  function hasImages(node){ return node.querySelector('img') !== null; }
+
+  async function exportNode(node, filename){
+    const scale = Math.max(2, window.devicePixelRatio*2);
+    const width  = node.scrollWidth;
+    const height = node.scrollHeight;
+
+    if (hasImages(node)) {
+      // html2canvas path (better with local images)
+      const canvas = await html2canvas(node,{
+        useCORS:true, allowTaint:false, backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--card')||'#0f1629',
+        scale, width, height, windowWidth: width, windowHeight: height, scrollY: 0
+      });
+      const url = canvas.toDataURL('image/png');
+      const a=document.createElement('a'); a.href=url; a.download=filename;
+      if(typeof a.download==='string'){ a.click(); } else { window.open(url,'_blank'); }
+    } else {
+      // html-to-image path (great for SVG-only content)
+      const dataUrl = await htmlToImage.toPng(node,{
+        backgroundColor:getComputedStyle(document.documentElement).getPropertyValue('--card')||'#0f1629',
+        pixelRatio: scale, width, height, canvasWidth: width, canvasHeight: height
+      });
+      const a=document.createElement('a'); a.href=dataUrl; a.download=filename;
+      if(typeof a.download==='string'){ a.click(); } else { window.open(dataUrl,'_blank'); }
+    }
   }
-  document.getElementById("saveFront").addEventListener("click", ()=>exportPNG("#card-front","yourrealestategps-front.png"));
-  document.getElementById("saveBack").addEventListener("click", ()=>exportPNG("#card-back","yourrealestategps-back.png"));
-  document.getElementById("saveFull").addEventListener("click", ()=>exportPNG("#card-wrapper","yourrealestategps-full.png"));
+
+  document.getElementById('saveFront').addEventListener('click',()=>exportNode(document.getElementById('card-front'), 'yourrealestategps-front.png'));
+  document.getElementById('saveBack').addEventListener('click', ()=>exportNode(document.getElementById('card-back'),  'yourrealestategps-back.png'));
+  document.getElementById('saveFull').addEventListener('click', ()=>exportNode(document.getElementById('card-wrapper'),'yourrealestategps-full.png'));
 </script>
 </body>
 </html>
+
