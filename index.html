@@ -3,241 +3,178 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Your Real Estate GPS — Digital Card</title>
+<title>Your Real Estate GPS — Matt Tolooee</title>
+<meta name="theme-color" content="#0b0f19" />
 
-<!-- Icons -->
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- QR + Export libs -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- Font Awesome (brand icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
   :root{
-    --bg:#0b0f19; --card:#10182b; --ink:#eef2ff; --muted:#a6b0c8;
-    --brand:#ef4444; --link:#7aa6ff; --border:rgba(255,255,255,.12);
-    --qr-bg:#fff; --qr-fg:#000; --shadow:0 18px 48px rgba(0,0,0,.45);
+    --bg:#0b0f19;          /* page background */
+    --card:#10182b;        /* card background */
+    --ink:#eef2ff;         /* main text */
+    --muted:#a6b0c8;       /* secondary text */
+    --link:#4da6ff;        /* links */
+    --accent:#ef4444;      /* red accent for bullets/icons */
+    --shadow:0 14px 40px rgba(0,0,0,.45);
+    --border:rgba(255,255,255,.16);
   }
-  body{margin:0;background:linear-gradient(120deg,var(--bg),#0d1426);color:var(--ink);
-       font-family:ui-sans-serif,system-ui,Segoe UI,Inter,Roboto,Arial}
-  .wrap{max-width:1120px;margin:28px auto;padding:16px;display:grid;gap:18px}
-  .bar{display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
-  .grid{display:grid;gap:18px}
-  @media(min-width:980px){.grid{grid-template-columns:1fr 1fr}}
 
-  .card{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
-
-  /* FRONT */
-  .front{display:grid;grid-template-columns:1.1fr 0.9fr;min-height:460px}
-  .photo{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.22),rgba(0,0,0,0))}
-  .info{display:flex;flex-direction:column;padding:34px 30px;gap:18px}
-  .tagline{color:var(--brand);font-style:italic;font-size:15px}
-  .name{font-size:36px;font-weight:900;letter-spacing:.2px;line-height:1.05}
-  .title{font-size:16px;color:var(--muted);font-weight:600}
-  .logo{margin-top:auto;display:flex;align-items:center;gap:16px;border:1px solid var(--border);
-        padding:10px 18px;border-radius:50px;background:#fff;color:#0b1020;width:fit-content}
-  .logo img{height:42px;width:42px;border-radius:50%;object-fit:contain}
-  .brandtext{font-weight:700;font-size:16px;white-space:nowrap;letter-spacing:.3px}
-
-  /* BACK */
-  .back{display:grid;grid-template-rows:auto 1fr auto;padding:24px;gap:16px;min-height:460px}
-  .qrs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .qr{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-      background:linear-gradient(180deg,rgba(255,255,255,.04),transparent);
-      border:1px dashed var(--border);border-radius:16px;padding:14px}
-  .qr .qrsvg{width:170px;height:170px;display:flex;align-items:center;justify-content:center}
-  .qr .qrsvg svg{width:100%;height:100%;display:block}
-  .qr a{margin-top:16px;font-size:14px;color:var(--link);text-decoration:underline;word-break:break-all}
-
-  .contact{text-align:center;font-size:16px;color:var(--muted);line-height:1.7}
-  .contact a{color:var(--link);text-decoration:underline}
-  .row i{color:var(--brand);margin-right:10px}
-
-  .social{display:flex;gap:16px;justify-content:center;margin-top:8px}
-  .icon{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff}
-  .icon i{font-size:18px}
-  .fb{background:#1877F2}.ig{background:#E4405F}.li{background:#0A66C2}.yt{background:#FF0000}
-
-  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;justify-content:center}
-  .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--ink);cursor:pointer}
-  .btn.primary{background:var(--ink);color:var(--bg)}
-  .btn:hover{box-shadow:0 6px 20px rgba(0,0,0,.12)}
-
-  @media(max-width:640px){
-    .front{grid-template-columns:1fr;min-height:unset}
-    .photo{min-height:360px}
-    .info{align-items:center;text-align:center;padding:20px}
-    .qrs{grid-template-columns:1fr}
-    .qr .qrsvg{width:150px;height:150px}
-    .actions .btn{width:100%}
+  /* Page */
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:system-ui, Segoe UI, Inter, Roboto, Arial, sans-serif;
+    min-height:100dvh; display:flex; align-items:center; justify-content:center;
+    padding:32px 16px;
   }
+
+  /* Card */
+  .card{
+    width:100%; max-width:520px;
+    background:var(--card); border-radius:22px; box-shadow:var(--shadow);
+    border:1px solid var(--border);
+    padding:26px 22px; text-align:center;
+  }
+
+  /* Headshot — framed, not chopped */
+  .headshot{
+    width:150px; height:180px; display:block; margin:0 auto 14px;
+    object-fit:cover;               /* fills box */
+    object-position:50% 18%;        /* show slightly more forehead */
+    border-radius:14px;
+    background:#0d1426;
+  }
+  @media (max-width:480px){
+    .headshot{ width:130px; height:160px; object-position:50% 20%; }
+  }
+
+  /* Name / Title */
+  .name{ font-size:28px; font-weight:900; margin:6px 0 4px; letter-spacing:.2px; }
+  .title{ font-size:15px; color:var(--muted); margin:0 0 14px; }
+
+  /* Info lines */
+  .info{ line-height:1.7; font-size:15px; }
+  .info .row{ margin:8px 0; }
+  .info i{ color:var(--accent); margin-right:10px; }
+  .info a{ color:var(--link); text-decoration:underline; }
+
+  /* Buttons */
+  .actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:16px 0 8px; }
+  .btn{
+    appearance:none; border:1px solid var(--border); background:#fff; color:#0b0f19;
+    padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; text-decoration:none;
+  }
+  .btn:hover{ background:var(--accent); color:#fff; border-color:transparent; }
+
+  /* Socials — colored brand circles */
+  .socials{ display:flex; gap:16px; justify-content:center; margin:14px 0 18px; }
+  .soc{ width:42px; height:42px; border-radius:50%; display:grid; place-items:center; color:#fff; }
+  .soc i{ font-size:18px; }
+  .soc.fb{ background:#1877F2; }
+  .soc.ig{ background:#E4405F; }
+  .soc.li{ background:#0A66C2; }
+  .soc.yt{ background:#FF0000; }
+
+  /* Logo pill */
+  .logo-pill{
+    display:inline-flex; align-items:center; gap:12px;
+    border:1px solid var(--border); background:#fff; color:#0b0f19;
+    padding:8px 16px; border-radius:999px; font-weight:800;
+  }
+  .logo-pill img{ width:34px; height:34px; border-radius:50%; object-fit:contain; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="bar"><div>Your Real Estate GPS</div></div>
+  <main class="card" id="card">
+    <img src="images/headshot.jpg" alt="Headshot of Matt Tolooee" class="headshot" />
 
-  <div class="grid" id="card-wrapper">
-    <!-- FRONT -->
-    <section class="card front" id="card-front">
-      <div class="photo">
-        <!-- Put your headshot here: images/headshot.jpg -->
-        <img src="images/headshot.jpg" alt="Portrait" />
-      </div>
-      <div class="info">
-        <div class="tagline">“Your Real Estate GPS”</div>
-        <div class="name">MATT TOLOOEE</div>
-        <div class="title">Managing Broker / Owner</div>
-        <div class="logo">
-          <img src="images/logo.jpg" alt="Logo">
-          <div class="brandtext">Metro Real Estate Group</div>
-        </div>
-      </div>
-    </section>
+    <div class="name">MATT TOLOOEE</div>
+    <div class="title">Managing Broker / Owner</div>
 
-    <!-- BACK -->
-    <section class="card back" id="card-back">
-      <div class="qrs">
-        <div class="qr">
-          <div id="qr-website" class="qrsvg"></div>
-          <a href="https://metrorealestategroup.co" target="_blank">metrorealestategroup.co</a>
-        </div>
-        <div class="qr">
-          <div id="qr-linktree" class="qrsvg"></div>
-          <a href="https://linktr.ee/metrorealestategroup" target="_blank">linktr.ee/metrorealestategroup</a>
-        </div>
+    <section class="info">
+      <div class="row">
+        <i class="fa-solid fa-phone"></i>
+        <a href="tel:+17193105185">719.310.5185</a> |
+        <a href="tel:+17205172345">720.517.2345</a>
       </div>
 
-      <div class="contact">
-        <div class="row"><i class="fa-solid fa-location-dot"></i>
-          <a href="https://maps.google.com/?q=106 N. Tejon Street, Colorado Springs, CO 80903" target="_blank">
-            106 N. Tejon Street, Colorado Springs, CO 80903
-          </a>
-        </div>
-        <div class="row"><i class="fa-solid fa-location-dot"></i>
-          <a href="https://maps.google.com/?q=501 S. Cherry Street, Ste 1100, Denver, CO 80206" target="_blank">
-            501 S. Cherry Street, Ste 1100, Denver, CO 80206
-          </a>
-        </div>
-        <div class="row"><i class="fa-solid fa-envelope"></i>
-          <a href="mailto:matt@metro-realestategroup.com">matt@metro-realestategroup.com</a>
-        </div>
-        <div class="row"><i class="fa-solid fa-phone"></i>
-          <a href="tel:+17193105185">719.310.5185</a> | <a href="tel:+17205172345">720.517.2345</a>
-        </div>
+      <div class="row">
+        <i class="fa-solid fa-envelope"></i>
+        <a href="mailto:matt@metro-realestategroup.com">matt@metro-realestategroup.com</a>
       </div>
 
-      <div class="social">
-        <a class="icon fb" href="https://www.facebook.com/MetroRealEstateGroup" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a class="icon ig" href="https://www.instagram.com/metrorealestategroupco/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a class="icon li" href="https://www.linkedin.com/in/matttolooeeyourrealestategps/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-        <a class="icon yt" href="https://youtube.com/@metrorealesategroup?si=_IOQRio07hXz0k-M" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <div class="row">
+        <i class="fa-solid fa-globe"></i>
+        <a href="https://metrorealestategroup.co" target="_blank" rel="noopener">metrorealestategroup.co</a>
+      </div>
+
+      <div class="row">
+        <i class="fa-solid fa-link"></i>
+        <a href="https://linktr.ee/metrorealestategroup" target="_blank" rel="noopener">linktr.ee/metrorealestategroup</a>
+      </div>
+
+      <div class="row">
+        <i class="fa-solid fa-location-dot"></i>
+        <a href="https://www.google.com/maps/search/?api=1&query=106+N+Tejon+St,+Colorado+Springs,+CO+80903" target="_blank" rel="noopener">
+          106 N. Tejon Street, Colorado Springs, CO 80903
+        </a>
+      </div>
+
+      <div class="row">
+        <i class="fa-solid fa-location-dot"></i>
+        <a href="https://www.google.com/maps/search/?api=1&query=501+S+Cherry+St,+Ste+1100,+Denver,+CO+80206" target="_blank" rel="noopener">
+          501 S. Cherry Street, Ste 1100, Denver, CO 80206
+        </a>
       </div>
     </section>
-  </div>
 
-  <div class="actions">
-    <a id="btn-vcf" class="btn primary" download="Matt-Tolooee.vcf">Download vCard</a>
-    <button id="saveFront" class="btn">Save Front as PNG</button>
-    <button id="saveBack" class="btn">Save Back as PNG</button>
-    <button id="saveFull" class="btn">Save Full Card as PNG</button>
-    <!-- <button id="embedImgs" class="btn" title="Use this if you're opening as file://">Embed Images (fix file:// export)</button> -->
-  </div>
-</div>
+    <div class="actions">
+      <a id="btn-iphone"  class="btn" download="Matt-Tolooee.vcf">Save to iPhone</a>
+      <a id="btn-android" class="btn" download="Matt-Tolooee.vcf">Save to Android</a>
+    </div>
 
-<script>
-  /* ---- Data ---- */
-  const DATA = {
-    website: "https://metrorealestategroup.co",
-    linktree: "https://linktr.ee/metrorealestategroup",
-    vcard: [
-      "BEGIN:VCARD","VERSION:3.0",
-      "FN:Matt Tolooee","N:Tolooee;Matt;;;",
-      "ORG:Metro Real Estate Group","TITLE:Managing Broker / Owner",
-      "TEL;TYPE=cell,voice:7193105185","TEL;TYPE=cell,voice:7205172345",
-      "EMAIL;TYPE=internet:matt@metro-realestategroup.com",
-      "URL:https://metrorealestategroup.co",
-      "ADR;TYPE=work:;;106 N. Tejon Street;Colorado Springs;CO;80903",
-      "ADR;TYPE=work:;;501 S. Cherry Street, Ste 1100;Denver;CO;80206",
-      "END:VCARD"
-    ].join("\n")
-  };
+    <nav class="socials" aria-label="Social links">
+      <a class="soc fb" href="https://www.facebook.com/MetroRealEstateGroup"  target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a class="soc ig" href="https://www.instagram.com/metrorealestategroupco/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a class="soc li" href="https://www.linkedin.com/in/matttolooeeyourrealestategps/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a class="soc yt" href="https://youtube.com/@metrorealesategroup?si=_IOQRio07hXz0k-M" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    </nav>
 
-  /* ---- vCard link ---- */
-  document.getElementById("btn-vcf").href =
-    URL.createObjectURL(new Blob([DATA.vcard], {type:"text/vcard;charset=utf-8"}));
+    <div class="logo-pill">
+      <img src="images/logo.jpg" alt="Metro Real Estate Group logo" />
+      <span>Metro Real Estate Group</span>
+    </div>
+  </main>
 
-  /* ---- QR (SVG) ---- */
-  function makeQR(elId, text){
-    const qr = qrcode(0, 'M'); qr.addData(text); qr.make();
-    const fg = getComputedStyle(document.documentElement).getPropertyValue('--qr-fg').trim() || '#000';
-    const bg = getComputedStyle(document.documentElement).getPropertyValue('--qr-bg').trim() || '#fff';
-    const svg = qr.createSvgTag({cellSize:4, margin:0})
-      .replace(/fill="black"/g, `fill="${fg}"`)
-      .replace(/fill="white"/g, `fill="${bg}"`);
-    document.getElementById(elId).innerHTML = svg;
-  }
-  makeQR('qr-website',  DATA.website);
-  makeQR('qr-linktree', DATA.linktree);
+  <!-- Option A: generate the VCF in-page and attach to both buttons -->
+  <script>
+    (function(){
+      const vcard = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "N:Tolooee;Matt;;;",
+        "FN:Matt Tolooee",
+        "ORG:Metro Real Estate Group",
+        "TITLE:Managing Broker / Owner",
+        "TEL;TYPE=CELL,VOICE:+17193105185",
+        "TEL;TYPE=CELL,VOICE:+17205172345",
+        "EMAIL;TYPE=INTERNET:matt@metro-realestategroup.com",
+        "URL:https://metrorealestategroup.co",
+        "ADR;TYPE=WORK:;;106 N. Tejon Street;Colorado Springs;CO;80903;USA",
+        "ADR;TYPE=WORK:;;501 S. Cherry Street, Ste 1100;Denver;CO;80206;USA",
+        "END:VCARD"
+      ].join("\n");
 
-  /* ---- PNG Export (rect-based; html-to-image with html2canvas fallback) ---- */
-  async function exportNode(node, filename){
-    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-    const rect = node.getBoundingClientRect();
-    const width  = Math.round(rect.width);
-    const height = Math.round(rect.height);
-    const bg = getComputedStyle(document.documentElement).getPropertyValue('--card') || '#10182b';
-    const opts = {
-      pixelRatio: Math.max(2.5, window.devicePixelRatio * 2),
-      width, height, canvasWidth: width, canvasHeight: height,
-      backgroundColor: bg,
-      style: { transform:'none', boxShadow:'none', borderRadius:'0', overflow:'visible' }
-    };
-    try {
-      const dataUrl = await htmlToImage.toPng(node, opts);
-      const a = document.createElement('a'); a.href=dataUrl; a.download=filename;
-      if(typeof a.download==='string') a.click(); else window.open(dataUrl,'_blank');
-    } catch (e) {
-      // Fallback for odd engines
-      const canvas = await html2canvas(node, {
-        useCORS:true, allowTaint:false, backgroundColor:bg,
-        scale: Math.max(2.5, window.devicePixelRatio * 2),
-        width, height, windowWidth: width, windowHeight: height, scrollY: 0
-      });
-      const url = canvas.toDataURL('image/png');
-      const a = document.createElement('a'); a.href=url; a.download=filename;
-      if(typeof a.download==='string') a.click(); else window.open(url,'_blank');
-    }
-  }
+      const blob  = new Blob([vcard], {type:"text/vcard;charset=utf-8"});
+      const vcfUrl = URL.createObjectURL(blob);
 
-  document.getElementById('saveFront').addEventListener('click',()=>exportNode(document.getElementById('card-front'), 'yourrealestategps-front.png'));
-  document.getElementById('saveBack').addEventListener('click', ()=>exportNode(document.getElementById('card-back'),  'yourrealestategps-back.png'));
-  document.getElementById('saveFull').addEventListener('click', ()=>exportNode(document.getElementById('card-wrapper'),'yourrealestategps-full.png'));
-
-  /* ---- Embed Images (works even over file://) ---- */
-  async function embedOne(selector, label){
-    return new Promise((resolve,reject)=>{
-      const input=document.createElement('input'); input.type='file'; input.accept='image/*';
-      input.onchange=()=>{
-        const f=input.files && input.files[0]; if(!f){reject(new Error('No file for '+label));return;}
-        const r=new FileReader(); r.onload=()=>{ document.querySelector(selector).src=r.result; resolve(); };
-        r.onerror=reject; r.readAsDataURL(f);
-      };
-      input.click();
-    });
-  }
-  document.getElementById('embedImgs').addEventListener('click', async ()=>{
-    try{
-      alert('Select your HEADSHOT image, then your LOGO image.');
-      await embedOne('.photo img', 'headshot');
-      await embedOne('.logo img', 'logo');
-      alert('Embedded! Now all PNG exports will work even if opened as file://');
-    }catch(e){ console.error(e); alert('Embedding cancelled or failed.'); }
-  });
-</script>
+      const iphoneBtn  = document.getElementById("btn-iphone");
+      const androidBtn = document.getElementById("btn-android");
+      if (iphoneBtn)  { iphoneBtn.href  = vcfUrl; iphoneBtn.download  = "Matt-Tolooee.vcf"; }
+      if (androidBtn) { androidBtn.href = vcfUrl; androidBtn.download = "Matt-Tolooee.vcf"; }
+    })();
+  </script>
 </body>
 </html>
+
