@@ -5,84 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Your Real Estate GPS — Matt Tolooee</title>
 <meta name="theme-color" content="#0b0f19" />
-
-<!-- Font Awesome (brand icons) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
   :root{
-    --bg:#0b0f19;          /* page background */
-    --card:#10182b;        /* card background */
-    --ink:#eef2ff;         /* main text */
-    --muted:#a6b0c8;       /* secondary text */
-    --link:#4da6ff;        /* links */
-    --accent:#ef4444;      /* red accent for bullets/icons */
-    --shadow:0 14px 40px rgba(0,0,0,.45);
+    --bg:#0b0f19; --card:#10182b; --ink:#eef2ff; --muted:#a6b0c8;
+    --link:#4da6ff; --accent:#ef4444; --shadow:0 14px 40px rgba(0,0,0,.45);
     --border:rgba(255,255,255,.16);
   }
-
-  /* Page */
   body{
-    margin:0; background:var(--bg); color:var(--ink);
+    margin:0;background:var(--bg);color:var(--ink);
     font-family:system-ui, Segoe UI, Inter, Roboto, Arial, sans-serif;
-    min-height:100dvh; display:flex; align-items:center; justify-content:center;
+    min-height:100dvh;display:flex;align-items:center;justify-content:center;
     padding:32px 16px;
   }
-
-  /* Card */
   .card{
-    width:100%; max-width:520px;
-    background:var(--card); border-radius:22px; box-shadow:var(--shadow);
-    border:1px solid var(--border);
-    padding:26px 22px; text-align:center;
+    width:100%;max-width:520px;background:var(--card);border-radius:22px;
+    box-shadow:var(--shadow);border:1px solid var(--border);
+    padding:26px 22px;text-align:center;
   }
-
-  /* Headshot — framed, not chopped */
   .headshot{
-    width:150px; height:180px; display:block; margin:0 auto 14px;
-    object-fit:cover;               /* fills box */
-    object-position:50% 18%;        /* show slightly more forehead */
-    border-radius:14px;
-    background:#0d1426;
+    width:150px;height:180px;display:block;margin:0 auto 14px;
+    object-fit:cover;object-position:50% 18%;border-radius:14px;background:#0d1426;
   }
-  @media (max-width:480px){
-    .headshot{ width:130px; height:160px; object-position:50% 20%; }
-  }
-
-  /* Name / Title */
-  .name{ font-size:28px; font-weight:900; margin:6px 0 4px; letter-spacing:.2px; }
-  .title{ font-size:15px; color:var(--muted); margin:0 0 14px; }
-
-  /* Info lines */
-  .info{ line-height:1.7; font-size:15px; }
-  .info .row{ margin:8px 0; }
-  .info i{ color:var(--accent); margin-right:10px; }
-  .info a{ color:var(--link); text-decoration:underline; }
-
-  /* Buttons */
-  .actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:16px 0 8px; }
+  @media (max-width:480px){ .headshot{width:130px;height:160px;object-position:50% 20%;} }
+  .name{font-size:28px;font-weight:900;margin:6px 0 4px;letter-spacing:.2px;}
+  .title{font-size:15px;color:var(--muted);margin:0 0 14px;}
+  .info{line-height:1.7;font-size:15px;}
+  .info .row{margin:8px 0;}
+  .info i{color:var(--accent);margin-right:10px;}
+  .info a{color:var(--link);text-decoration:underline;}
+  .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 8px;}
   .btn{
-    appearance:none; border:1px solid var(--border); background:#fff; color:#0b0f19;
-    padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; text-decoration:none;
+    appearance:none;border:1px solid var(--border);background:#fff;color:#0b0f19;
+    padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none;
   }
-  .btn:hover{ background:var(--accent); color:#fff; border-color:transparent; }
-
-  /* Socials — colored brand circles */
-  .socials{ display:flex; gap:16px; justify-content:center; margin:14px 0 18px; }
-  .soc{ width:42px; height:42px; border-radius:50%; display:grid; place-items:center; color:#fff; }
-  .soc i{ font-size:18px; }
-  .soc.fb{ background:#1877F2; }
-  .soc.ig{ background:#E4405F; }
-  .soc.li{ background:#0A66C2; }
-  .soc.yt{ background:#FF0000; }
-
-  /* Logo pill */
+  .btn:hover{background:var(--accent);color:#fff;border-color:transparent;}
+  .socials{display:flex;gap:16px;justify-content:center;margin:14px 0 18px;}
+  .soc{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;}
+  .soc i{font-size:18px;}
+  .soc.fb{background:#1877F2;} .soc.ig{background:#E4405F;}
+  .soc.li{background:#0A66C2;} .soc.yt{background:#FF0000;}
   .logo-pill{
-    display:inline-flex; align-items:center; gap:12px;
-    border:1px solid var(--border); background:#fff; color:#0b0f19;
-    padding:8px 16px; border-radius:999px; font-weight:800;
+    display:inline-flex;align-items:center;gap:12px;border:1px solid var(--border);
+    background:#fff;color:#0b0f19;padding:8px 16px;border-radius:999px;font-weight:800;
   }
-  .logo-pill img{ width:34px; height:34px; border-radius:50%; object-fit:contain; }
+  .logo-pill img{width:34px;height:34px;border-radius:50%;object-fit:contain;}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
 </style>
 </head>
 <body>
@@ -98,29 +67,24 @@
         <a href="tel:+17193105185">719.310.5185</a> |
         <a href="tel:+17205172345">720.517.2345</a>
       </div>
-
       <div class="row">
         <i class="fa-solid fa-envelope"></i>
         <a href="mailto:matt@metro-realestategroup.com">matt@metro-realestategroup.com</a>
       </div>
-
       <div class="row">
         <i class="fa-solid fa-globe"></i>
         <a href="https://metrorealestategroup.co" target="_blank" rel="noopener">metrorealestategroup.co</a>
       </div>
-
       <div class="row">
         <i class="fa-solid fa-link"></i>
         <a href="https://linktr.ee/metrorealestategroup" target="_blank" rel="noopener">linktr.ee/metrorealestategroup</a>
       </div>
-
       <div class="row">
         <i class="fa-solid fa-location-dot"></i>
         <a href="https://www.google.com/maps/search/?api=1&query=106+N+Tejon+St,+Colorado+Springs,+CO+80903" target="_blank" rel="noopener">
           106 N. Tejon Street, Colorado Springs, CO 80903
         </a>
       </div>
-
       <div class="row">
         <i class="fa-solid fa-location-dot"></i>
         <a href="https://www.google.com/maps/search/?api=1&query=501+S+Cherry+St,+Ste+1100,+Denver,+CO+80206" target="_blank" rel="noopener">
@@ -130,9 +94,10 @@
     </section>
 
     <div class="actions">
-      <a id="btn-iphone"  class="btn" download="Matt-Tolooee.vcf">Save to iPhone</a>
-      <a id="btn-android" class="btn" download="Matt-Tolooee.vcf">Save to Android</a>
+      <a id="btn-iphone"  class="btn">Save to iPhone</a>
+      <a id="btn-android" class="btn">Save to Android</a>
     </div>
+    <div id="openHint" class="hint" hidden>Downloaded. Tap the notification to open and import.</div>
 
     <nav class="socials" aria-label="Social links">
       <a class="soc fb" href="https://www.facebook.com/MetroRealEstateGroup"  target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -147,7 +112,7 @@
     </div>
   </main>
 
-  <!-- Option A: generate the VCF in-page and attach to both buttons -->
+  <!-- Smart vCard handling: open directly in Contacts on iOS/Android when possible -->
   <script>
     (function(){
       const vcard = [
@@ -166,15 +131,48 @@
         "END:VCARD"
       ].join("\n");
 
-      const blob  = new Blob([vcard], {type:"text/vcard;charset=utf-8"});
-      const vcfUrl = URL.createObjectURL(blob);
+      // Build both a Blob URL and a data: URL (some phones prefer one or the other)
+      const blob = new Blob([vcard], {type:"text/vcard;charset=utf-8"});
+      const blobUrl = URL.createObjectURL(blob);
+      const dataUrl = "data:text/vcard;charset=utf-8," + encodeURIComponent(vcard);
 
-      const iphoneBtn  = document.getElementById("btn-iphone");
-      const androidBtn = document.getElementById("btn-android");
-      if (iphoneBtn)  { iphoneBtn.href  = vcfUrl; iphoneBtn.download  = "Matt-Tolooee.vcf"; }
-      if (androidBtn) { androidBtn.href = vcfUrl; androidBtn.download = "Matt-Tolooee.vcf"; }
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isAndroid = /Android/i.test(navigator.userAgent);
+
+      const openHint = document.getElementById('openHint');
+
+      function openInline(url){
+        // Opening in the same tab tends to trigger the OS contact handler.
+        window.location.href = url;
+      }
+      function downloadFile(url, filename){
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); a.remove();
+      }
+
+      function handleTap(){
+        if (isIOS) {
+          // iOS is happiest with inline data URL or blob URL
+          openInline(dataUrl);
+        } else if (isAndroid) {
+          // Many Android phones can open inline; if not, it falls back to a download.
+          // Try inline first:
+          openInline(dataUrl);
+          // Show tiny hint if the browser just downloads it
+          // (user taps the download notification to import)
+          setTimeout(() => { openHint.hidden = false; }, 700);
+        } else {
+          // Desktop: download
+          downloadFile(blobUrl, "Matt-Tolooee.vcf");
+        }
+      }
+
+      document.getElementById("btn-iphone").addEventListener("click", handleTap);
+      document.getElementById("btn-android").addEventListener("click", handleTap);
     })();
   </script>
 </body>
 </html>
+
 
