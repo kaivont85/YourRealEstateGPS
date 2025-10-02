@@ -51,11 +51,10 @@
     background:#fff;color:#0b0f19;padding:8px 16px;border-radius:999px;font-weight:800;
   }
   .logo-pill img{width:34px;height:34px;border-radius:50%;object-fit:contain;}
-  .hint{font-size:12px;color:var(--muted);margin-top:6px;}
 </style>
 </head>
 <body>
-  <main class="card" id="card">
+  <main class="card">
     <img src="images/headshot.jpg" alt="Headshot of Matt Tolooee" class="headshot" />
 
     <div class="name">MATT TOLOOEE</div>
@@ -94,10 +93,9 @@
     </section>
 
     <div class="actions">
-      <a id="btn-iphone"  class="btn">Save to iPhone</a>
-      <a id="btn-android" class="btn">Save to Android</a>
+      <a href="Matt-Tolooee-top-left.vcf" class="btn" download="Matt-Tolooee.vcf">Save to iPhone</a>
+      <a href="Matt-Tolooee-top-left.vcf" class="btn" download="Matt-Tolooee.vcf">Save to Android</a>
     </div>
-    <div id="openHint" class="hint" hidden>Downloaded. Tap the notification to open and import.</div>
 
     <nav class="socials" aria-label="Social links">
       <a class="soc fb" href="https://www.facebook.com/MetroRealEstateGroup"  target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -107,72 +105,10 @@
     </nav>
 
     <div class="logo-pill">
-      <img src="images/logo.jpg" alt="Metro Real Estate Group logo" />
+      <img src="images/logo_fixed.png" alt="Metro Real Estate Group logo" />
       <span>Metro Real Estate Group</span>
     </div>
   </main>
-
-  <!-- Smart vCard handling: open directly in Contacts on iOS/Android when possible -->
-  <script>
-    (function(){
-      const vcard = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        "N:Tolooee;Matt;;;",
-        "FN:Matt Tolooee",
-        "ORG:Metro Real Estate Group",
-        "TITLE:Managing Broker / Owner",
-        "TEL;TYPE=CELL,VOICE:+17193105185",
-        "TEL;TYPE=CELL,VOICE:+17205172345",
-        "EMAIL;TYPE=INTERNET:matt@metro-realestategroup.com",
-        "URL:https://metrorealestategroup.co",
-        "ADR;TYPE=WORK:;;106 N. Tejon Street;Colorado Springs;CO;80903;USA",
-        "ADR;TYPE=WORK:;;501 S. Cherry Street, Ste 1100;Denver;CO;80206;USA",
-        "END:VCARD"
-      ].join("\n");
-
-      // Build both a Blob URL and a data: URL (some phones prefer one or the other)
-      const blob = new Blob([vcard], {type:"text/vcard;charset=utf-8"});
-      const blobUrl = URL.createObjectURL(blob);
-      const dataUrl = "data:text/vcard;charset=utf-8," + encodeURIComponent(vcard);
-
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const isAndroid = /Android/i.test(navigator.userAgent);
-
-      const openHint = document.getElementById('openHint');
-
-      function openInline(url){
-        // Opening in the same tab tends to trigger the OS contact handler.
-        window.location.href = url;
-      }
-      function downloadFile(url, filename){
-        const a = document.createElement('a');
-        a.href = url; a.download = filename;
-        document.body.appendChild(a); a.click(); a.remove();
-      }
-
-      function handleTap(){
-        if (isIOS) {
-          // iOS is happiest with inline data URL or blob URL
-          openInline(dataUrl);
-        } else if (isAndroid) {
-          // Many Android phones can open inline; if not, it falls back to a download.
-          // Try inline first:
-          openInline(dataUrl);
-          // Show tiny hint if the browser just downloads it
-          // (user taps the download notification to import)
-          setTimeout(() => { openHint.hidden = false; }, 700);
-        } else {
-          // Desktop: download
-          downloadFile(blobUrl, "Matt-Tolooee.vcf");
-        }
-      }
-
-      document.getElementById("btn-iphone").addEventListener("click", handleTap);
-      document.getElementById("btn-android").addEventListener("click", handleTap);
-    })();
-  </script>
 </body>
 </html>
-
 
