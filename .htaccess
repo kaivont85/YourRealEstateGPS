@@ -1,0 +1,21 @@
+# Serve vCard files with the proper MIME type
+AddType text/vcard .vcf
+AddType text/x-vcard .vcard
+
+# Make iOS/Android open vCards inline (instead of forcing a download)
+<FilesMatch "\.(vcf|vcard)$">
+  <IfModule mod_headers.c>
+    Header set Content-Type "text/vcard; charset=utf-8"
+    Header set Content-Disposition "inline"
+    # (Optional) allow cross-origin access if you ever embed or fetch the file
+    Header set Access-Control-Allow-Origin "*"
+  </IfModule>
+</FilesMatch>
+
+# (Optional) light caching for faster fetch, safe to change later
+<FilesMatch "\.(vcf|vcard)$">
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 10 minutes"
+  </IfModule>
+</FilesMatch>
